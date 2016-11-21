@@ -53,7 +53,7 @@ for user in GitUsers:
                                 getCommitStats = json.loads(requests.get("https://api.github.com/repos/"+user+"/"+name+"/commits/"+commit['sha']).content)
                                 commitStats = getCommitStats["stats"]
                                 repoInfo[name]["commits"].append({"sha":commit['sha'],"stats":commitStats})
-                            with open(todayDate+"gitData"+user+".json","w+") as file1:
+                            with open("gitData_"+user+".json","r+") as file1:
                                 file1.write(json.dumps(repoInfo, indent=4, separators=(',',':')))
                         else:
                             print("Error trying to get commits, returned error code: " +str(c.status_code))
