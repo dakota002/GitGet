@@ -54,8 +54,12 @@ def UpdateJson(GitUserList):
                                     getCommitStats = json.loads(requests.get("https://api.github.com/repos/"+user+"/"+name+"/commits/"+commit['sha']).content)
                                     commitStats = getCommitStats["stats"]
                                     repoInfo[name]["commits"].append({"sha":commit['sha'],"stats":commitStats})
-                                with open("gitData_"+user+".json","r+") as file1:
-                                    file1.write(json.dumps(repoInfo, indent=4, separators=(',',':')))
+                                try:
+                                    with open("gitData_"+user+".json","r+") as file1:
+                                        file1.write(json.dumps(repoInfo, indent=4, separators=(',',':')))
+                                except IOError:
+                                    with open("gitData_"+user+".json","w+") as file1:
+                                        file1.write(json.dumps(repoInfo, indent=4, separators=(',',':')))
                             else:
                                 print("Error trying to get commits, returned error code: " +str(c.status_code))
                         else:
@@ -68,5 +72,5 @@ def UpdateJson(GitUserList):
             print("Skipping "+user)
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     UpdateJson(GitUsers)
